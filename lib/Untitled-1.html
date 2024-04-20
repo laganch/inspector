@@ -1,0 +1,168 @@
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+      <div class="text-center">
+        <h3 class="new-title">Assessment</h3>
+      </div>
+      <div *ngIf="showErrorMessageTrigger" class="alert alert-danger text-center"><span>{{getErrorMessage()}}</span></div>
+      <div class="container mt-2 mute">
+        <div class="col-lg-12">
+          <form [formGroup]="form" >
+            <div class="row">
+              <div class="col-lg-3 col-sm-3">
+                <div class="form-group">
+                  <label>Payment Status</label>
+                  <select class="form-control" formControlName="paymentStatus">
+                    <option [value]="''">--Select type --</option>
+                    <option *ngFor="let t of paymentStatus" [value]="t">{{ t | removeUnderscores}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3">
+                <div class="form-group">
+                  <label>Approval Status</label>
+                  <select class="form-control" formControlName="approvalStatus">
+                    <option [value]="''">--Select status --</option>
+                    <option *ngFor="let s of approvalStatus" [value]="s">{{ s | removeUnderscores}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3">
+                <div class="form-group">
+                  <label >Assessment ID</label>
+                  <input type="text" class="form-control" placeholder="Type here" formControlName="assessmentId">
+                </div>
+              </div>
+              <!--                           <div class="col-lg-12 col-sm-6">-->
+              <!--                             <div class="form-group">-->
+              <!--                               <label>Select Date Range *</label>-->
+              <!--                               <div class="input-group input-daterange d-flex align-items-center">-->
+              <!--                                 <input type="date" class="form-control">-->
+              <!--                                 <h6 class="input-group-addon mx-4">to</h6>-->
+              <!--                                 <input type="date" class="form-control">-->
+              <!--                               </div>-->
+              <!--                             </div>-->
+              <!--                           </div>-->
+
+            </div>
+            <button type="button" class="btn btn-warning btn-rounded btn-fw btn-lg offset-lg-5" (click)="performSearch()">Search
+              <ng-container *ngIf="working"><span><span class="iconify icon" data-icon="eos-icons:loading"></span></span></ng-container>
+            </button>
+          </form>
+
+          <div class="mt-4">
+            <div class="d-flex align-items-center justify-content-between fs-15 flex-wrap" style="font-size: medium">
+              <span class="my-1 mx-4" >Total Assessments: (<strong>{{totalCount || 0}})</strong></span>
+<!--                <button *ngIf="list?.length && !notPaid" type="button" class="btn btn-warning btn-rounded btn-fw btn-lg pull-right float-right mt-1" (click)="printBulk(list)">Print All-->
+<!--                  <ng-container *ngIf="printing"><span><span class="iconify icon" data-icon="eos-icons:loading"></span></span></ng-container>-->
+<!--                </button>-->
+            </div>
+          </div>
+
+          <div class="table-responsive mt-2">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>S/N</th>
+                <th>Assessment ID</th>
+                <th>Owner Name</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Amount</th>
+                <th>Date Created</th>
+                <th>Assessed By</th>
+                <th>Approved By</th>
+                <th>Payment Status</th>
+                <th>Approval Status</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+
+              <tbody *ngIf="working">
+              <tr>
+                <td colspan="100%" class="progressbar">
+                  <p>
+                    <progressbar class="progress-striped active" [value]="100" [max]="100" type="danger"
+                                 [striped]="true" [animate]="true"></progressbar>
+                  </p>
+                </td>
+              </tr>
+              </tbody>
+
+              <ng-container *ngIf="!working && !list?.length">
+                <tr>
+                  <td colspan="100%">
+                    <div class="text-center py-3 my-2">
+                      <div class="fs-18 fw-bold">No data found</div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              <tbody *ngIf="!working && list?.length">
+              <tr  *ngFor="let row of list; index as i">
+                <td>{{i + 1 + offset}}</td>
+                <td>{{row.assessmentId}}</td>
+                <td>{{row.owner}}</td>
+                <td>{{row.location}}</td>
+                <td>{{row.type}}</td>
+                <td>{{row.size}}</td>
+                <td>{{"N" + row.amount}}</td>
+                <td>{{row.createdAt | dateOnly}}</td>
+                <td>{{row.assessedBy}}</td>
+                <td>{{row.approvedBy ? row.approvedBy : "-" }}</td>
+                <td><label class="text-{{this.textColor(row.paymentStatus)}} font-weight-bold">{{row.paymentStatus | removeUnderscores}}</label></td>
+                <td><label class="text-{{this.textColor(row.approvalStatus)}} font-weight-bold">{{row.approvalStatus | removeUnderscores}}</label></td>
+                <td>
+                <div *ngIf="row.approvalStatus != 'REJECTED'" class="dropdown">
+                  <button class="badge badge-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Available Actions
+                    <span class="iconify fw-bold fs-5" data-icon="bi:three-dots-vertical"></span>
+                  </button>
+                  <ul class="dropdown-menu tiny-text" aria-labelledby="menuItems">
+                    <li *ngIf="row.approvalStatus == 'PENDING'">
+                      <a class="dropdown-item  text-success" (click)="demandNotice(row.id, 'APPROVED')"><i class="mdi mdi-check"></i>Approve Demand Notice</a>
+                    </li>
+                    <li  *ngIf="row.approvalStatus == 'PENDING'">
+                      <a class="dropdown-item  text-warning" (click)="demandNotice(row.id, 'REJECTED')"><i class="mdi mdi-close"></i>Disapprove Demand Notice</a>
+                    </li>
+                    <li *ngIf="row.paymentStatus != 'PAID' ">
+                      <a class="dropdown-item  text-success"  (click)="printSingle(row.id, 'DEMAND_NOTICE')"><i class="mdi mdi-printer"></i>Print Demand Notice</a>
+                    </li>
+                    <li *ngIf="row.paymentStatus == 'PAID' ">
+                      <a class="dropdown-item  text-success" (click)="printSingle(row.id, 'CERTIFICATE')"><i class="mdi mdi-printer"></i>Print Certificate</a>
+                    </li>
+                  </ul>
+                </div>
+                  <div *ngIf="row.approvalStatus == 'REJECTED'">
+                    No Actions Available
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex align-items-center justify-content-between flex-wrap mt-2" style="font-size: medium" >
+            <div class="d-flex align-items-center">
+              <div>Show</div>
+              <div class="mx-2">
+                <select class="form-control py-1 px-2" [(ngModel)]="selectedLimit" (change)="updateLimit()">
+                  <option [value]=10>10</option>
+                  <option [value]=25>25</option>
+                  <option [value]=50>50</option>
+                  <option [value]=100>100</option>
+                </select>
+              </div>
+              <div>entries</div>
+            </div>
+            <pagination [rotate]="true" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;"
+                        firstText="&laquo;" lastText="&raquo;" [totalItems]="totalCount" [itemsPerPage]="itemsPerPage"
+                        [maxSize]="8" (pageChanged)="onPageChanged($event)" [(ngModel)]="page"></pagination>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
