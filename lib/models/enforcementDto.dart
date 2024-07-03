@@ -10,40 +10,42 @@ String userToJson(List<EnforcementDto> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class EnforcementDto {
-  EnforcementDto({
-    this.payment_date,
-    this.penaltyBalance,
-    this.address,
-    this.amount,
-    this.amountDue,
-    this.asin,
-    this.biometricLevy,
-    this.biometricStatus,
-    this.dateRegistered,
-    this.fee_description,
-    this.historyList,
-    this.lastPayment,
-    this.name,
-    this.otherPenaltyDue,
-    this.paymentBalance,
-    this.paymentHistoryDto,
-    this.penaltyDue,
-    this.photo,
-    this.plateNumber,
-    this.reference,
-    this.registeredDays,
-    this.registeredMonth,
-    this.registeredWeeks,
-    this.route,
-    this.status,
-    this.totalPayment,
-    this.totalPenalty,
-    this.type,
-    this.month,
-    this.waiver,
-    this.reason,
-    this.expected
-  });
+  EnforcementDto(
+      {this.payment_date,
+      this.penaltyBalance,
+      this.address,
+      this.amount,
+      this.amountDue,
+      this.asin,
+      this.biometricLevy,
+      this.biometricStatus,
+      this.dateRegistered,
+      this.fee_description,
+      this.historyList,
+      this.lastPayment,
+      this.name,
+      this.otherPenaltyDue,
+      this.paymentBalance,
+      this.paymentHistoryDto,
+      this.penaltyDue,
+      this.photo,
+      this.plateNumber,
+      this.reference,
+      this.registeredDays,
+      this.registeredMonth,
+      this.registeredWeeks,
+      this.route,
+      this.status,
+      this.totalPayment,
+      this.totalPenalty,
+      this.type,
+      this.month,
+      this.waiver,
+      this.reason,
+      this.expected,
+      this.signoutAmount,
+      this.renewalStatus
+      });
 
   double? amount;
   String? payment_date;
@@ -78,9 +80,10 @@ class EnforcementDto {
   double? waiver;
   double? expected;
   String? reason;
+  double? signoutAmount;
+  String? renewalStatus;
 
   factory EnforcementDto.fromJson(Map<String, dynamic> json) => EnforcementDto(
-
         dateRegistered: json["dateRegistered"],
         name: json["name"],
         amount: json["amount"],
@@ -109,9 +112,14 @@ class EnforcementDto {
         reason: json["reason"],
         waiver: json["waiver"],
         expected: json["expected"],
-
-        paymentHistoryDto: json["paymentHistoryDto"] != null ? PaymentDto.fromJson(json["paymentHistoryDto"]): null,
-        lastPayment: json["lastPayment"] != null ? PaymentDto.fromJson(json["lastPayment"]): null,
+        signoutAmount: json["signoutAmount"],
+        renewalStatus: json["renewalStatus"],
+        paymentHistoryDto: json["paymentHistoryDto"] != null
+            ? PaymentDto.fromJson(json["paymentHistoryDto"])
+            : null,
+        lastPayment: json["lastPayment"] != null
+            ? PaymentDto.fromJson(json["lastPayment"])
+            : null,
         historyList: json["historyList"] != null
             ? List<PaymentDto>.from(
                 json["historyList"].map((x) => PaymentDto.fromJson(x)))

@@ -49,7 +49,6 @@ class _Tcode extends State<TCode> {
 
     Map<String, dynamic> user = jsonDecode(response);
     EnforcementDto dto = EnforcementDto.fromJson(user);
-    print(dto.reason);
     setState(() {
       responseData = dto;
       isLoading = false;
@@ -123,7 +122,10 @@ class _Tcode extends State<TCode> {
               ),
               const SizedBox(height: 20),
               TextFormField(
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),LengthLimitingTextInputFormatter(14)],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),
+                  LengthLimitingTextInputFormatter(14)
+                ],
                 controller: plateNo,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -426,6 +428,17 @@ class _Tcode extends State<TCode> {
                                     ),
                                     Row(
                                       children: [
+                                        const Text("Signout Amount:"),
+                                        const Spacer(),
+                                        Text("${responseData.signoutAmount}")
+                                      ],
+                                    ),
+                                    const Divider(
+                                      color: Colors.grey,
+                                      thickness: BorderSide.strokeAlignCenter,
+                                    ),
+                                    Row(
+                                      children: [
                                         const Text("Waiver Amount:"),
                                         const Spacer(),
                                         Text("${responseData.waiver}")
@@ -469,11 +482,56 @@ class _Tcode extends State<TCode> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.red),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ],
-                                    )
+                                    ),
+
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Divider(color: Colors.white),
+                                Container(
+                                  decoration: const BoxDecoration(
+                                      color: Color.fromARGB(255, 21, 115, 183)),
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    children: [
+                                      Text("VEHICLE LICENSE",
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .background,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "${responseData.renewalStatus}",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .background,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                                   ],
                                 ),
                                 const SizedBox(
