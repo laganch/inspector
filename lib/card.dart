@@ -7,20 +7,21 @@ class MyCard extends StatelessWidget {
   final void Function() callScreen;
   final Color color;
 
-  const MyCard(this.message, this.image, this.callScreen, this.color, {super.key});
+  const MyCard(this.message, this.image, this.callScreen, this.color,
+      {super.key});
 
   @override
   Widget build(context) {
     return Center(
-      child: Card(
-        elevation: 50,
-        shadowColor: Colors.black,
-        color: color,
-        child: SizedBox(
-            width: 120,
-            height: 120,
-            child: GestureDetector(
-              onTap: callScreen,
+      child: GestureDetector(
+        onTap: callScreen,
+        child: Card(
+            elevation: 50,
+            shadowColor: Colors.black,
+            color: color,
+            child: SizedBox(
+              width: 120,
+              height: 120,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(children: [

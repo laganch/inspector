@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   Home(this.callRw, this.callContact, this.callValidity, this.callOriginal,
-      this.callTcode, this.callLogin, this.callPayment,
+      this.callTcode, this.callLogin, this.callPayment,this.callTcc, this.callBp,this.callPayVerify,this.callAsinSearch,
       {super.key});
 
   final Function() callRw,
@@ -14,7 +14,11 @@ class Home extends StatelessWidget {
       callTcode,
       callValidity,
       callOriginal,
-      callPayment;
+      callPayment,
+      callBp,
+      callTcc,
+      callAsinSearch,
+      callPayVerify;
 
   // final Box _boxLogin = Hive.box("login");
 
@@ -59,10 +63,22 @@ class Home extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MyCard("TCode/Ucode", "assets/tcode.jpeg", callTcode,
-                      Colors.green),
-                  MyCard("Heavy Duty", "assets/guniune.png", callOriginal,
-                      Colors.teal),
+
+                  // MyCard("TCode/Ucode", "assets/tcode.jpeg", callTcode,
+                  //     Colors.green),
+                  MyCard("TCC Verification", "assets/tcc.png", callTcc,
+                      const Color.fromRGBO(36, 7, 80, 1)),
+                  MyCard("Verify Payment", "assets/payment.png", callPayVerify,
+                      const Color.fromRGBO(3, 135, 64, 1)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MyCard(
+                      "Search ASIN", "assets/asin.png", callAsinSearch, const Color.fromRGBO(229, 89, 52, 1)),
+                  MyCard("Verify B.P. Certificate", "assets/certificate.png", callBp,
+                      const Color.fromRGBO(82, 108, 251, 1)),
                 ],
               ),
               Row(

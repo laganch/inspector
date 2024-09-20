@@ -1,9 +1,13 @@
 // ignore: file_names
 import 'package:airs_inspector/login.dart';
 import 'package:airs_inspector/payment.dart';
+import 'package:airs_inspector/verification/asin.dart';
+import 'package:airs_inspector/verification/bp.dart';
 import 'package:airs_inspector/verification/contact.dart';
 import 'package:airs_inspector/verification/genuine.dart';
+import 'package:airs_inspector/verification/payment.dart';
 import 'package:airs_inspector/verification/rw.dart';
+import 'package:airs_inspector/verification/tcc.dart';
 import 'package:airs_inspector/verification/tcode.dart';
 import 'package:airs_inspector/verification/validity.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +27,7 @@ class _MainApp extends State<MainApp> {
 
   @override
   void initState() {
-    activeWidget = Home(callRw, callContact, callValidity, callOriginal, callTcode, callLogin, callPayment);
+    activeWidget = Home(callRw, callContact, callValidity, callOriginal, callTcode, callLogin, callPayment, callTcc, callBP, callPayVerify, callAsinSearch);
     super.initState();
   }
 
@@ -65,6 +69,26 @@ class _MainApp extends State<MainApp> {
     callPayment() {
     setState(() {
       activeWidget = const Payment();
+    });
+  }
+    callBP() {
+    setState(() {
+      activeWidget = const Premises();
+    });
+  }
+    callTcc() {
+    setState(() {
+      activeWidget = const Tcc();
+    });
+  }
+    callPayVerify() {
+    setState(() {
+      activeWidget = const PaymentVerify();
+    });
+  }
+    callAsinSearch() {
+    setState(() {
+      activeWidget = const Asin();
     });
   }
 var kColorScheme =
