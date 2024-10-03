@@ -24,8 +24,9 @@ class _Asin extends State<Asin> {
     setState(() {
       isloading = true;
     });
-    var response =
-        await BaseClient().get("worthiness/${tccNo.text}").catchError((err) {});
+    var response = await BaseClient()
+        .get("verification/tcc/${tccNo.text}/asin")
+        .catchError((err) {});
     if (response == null) {
       setState(() {
         isError = true;
@@ -37,7 +38,6 @@ class _Asin extends State<Asin> {
 
     Map<String, dynamic> user = jsonDecode(response);
     Verificationdto dto = Verificationdto.fromJson(user);
-    print(dto.id);
     setState(() {
       responseData = dto;
       isloading = false;
@@ -79,16 +79,13 @@ class _Asin extends State<Asin> {
               ),
               const SizedBox(height: 5),
               TextFormField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),
-                  LengthLimitingTextInputFormatter(9)
-                ],
+                inputFormatters: [LengthLimitingTextInputFormatter(19)],
                 controller: tccNo,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   label: const Center(
                     child: Text(
-                      "Enter phone number / email",
+                      "Enter phone number/email",
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
@@ -118,6 +115,144 @@ class _Asin extends State<Asin> {
                 const SizedBox(
                   height: 20,
                 ),
+                responseData.displayName != null && !isloading
+                    ? Container(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(
+                                5.0,
+                                7.0,
+                              ),
+                              blurRadius: 10.0,
+                              spreadRadius: 2.0,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(children: [
+                            Stack(
+                              children: <Widget>[
+                                // This widget is at the bottom
+                                const SizedBox(
+                                  width: double.infinity,
+                                  height: 180, // Base layer background
+                                ),
+                                // This widget is in the middle
+                                Positioned(
+                                  top: 0,
+                                  child: Container(
+                                    width: 700,
+                                    height: 70,
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(3, 135, 64, 1),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10)),
+                                    ),
+                                  ),
+                                ),
+                                // This widget is on top (highest z-index)
+                                Positioned(
+                                  top: (300 - 230) /
+                                      2, // Center the container vertically
+                                  left: (300 - 50) / 2,
+                                  // Center the container horizontally
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100.0),
+                                        child: responseData.photo != null
+                                            ? Image.network(
+                                                "${responseData.photo}",
+                                                height: 140,
+                                                width: 130,
+                                              )
+                                            : const Image(
+                                                image: AssetImage(
+                                                  "assets/login.jpeg",
+                                                ),
+                                                height: 130,
+                                                width: 130,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            responseData.displayName != null
+                                ? Column(
+                                    children: [
+                                      Center(
+                                        child: (Text(
+                                          "${responseData.displayName}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        )),
+                                      ),
+                                      Center(
+                                        child: (Text("${responseData.email}")),
+                                      ),
+                                      Center(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "ASIN: ",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text("${responseData.asin}")
+                                        ],
+                                      )),
+                                      Center(
+                                        child: (responseData.phone != null
+                                            ? Text(
+                                                "${responseData.phone}",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : const Text("N/A")),
+                                      ),
+                                    ],
+                                  )
+                                : const Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "INVALID ASIN",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                          ]),
+                        ),
+                      )
+                    : isloading
+                        ? const CircularProgressIndicator()
+                        : isError
+                            ? const Text("Invalid ASIN")
+                            : const Text("")
               ])
             ],
           ),

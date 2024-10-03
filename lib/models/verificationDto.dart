@@ -9,6 +9,10 @@ class Verificationdto {
       this.phone,
       this.photo,
       this.profession,
+      this.desc,
+      this.channel,
+      this.amount,
+      this.amount2,
       this.validity});
 
   String? photo;
@@ -21,6 +25,10 @@ class Verificationdto {
   String? id;
   String? asin;
   String? paymentDate;
+  double? amount;
+  double? amount2;
+  String? desc;
+  String? channel;
 
   factory Verificationdto.fromJson(Map<String, dynamic> json) =>
       Verificationdto(
@@ -34,6 +42,10 @@ class Verificationdto {
         paymentDate: json["paymentDate"],
         validity: json["validity"],
         profession: json["profession"],
+        desc: json["desc"],
+        channel: json["channel"],
+        amount: json["amount"],
+        amount2: json["amount2"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +59,9 @@ class Verificationdto {
         "profession": profession,
         "paymentDate": paymentDate,
         "asin": asin,
+        "desc": desc,
+        "channel": channel,
+        "amount": amount,
+        "amount2": amount2,
       };
 }

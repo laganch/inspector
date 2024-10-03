@@ -63,9 +63,6 @@ class Home extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
-                  // MyCard("TCode/Ucode", "assets/tcode.jpeg", callTcode,
-                  //     Colors.green),
                   MyCard("TCC Verification", "assets/tcc.png", callTcc,
                       const Color.fromRGBO(36, 7, 80, 1)),
                   MyCard("Verify Payment", "assets/payment.png", callPayVerify,
@@ -84,6 +81,8 @@ class Home extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
+                  MyCard("TCode/Ucode", "assets/tcode.jpeg", callTcode,Colors.green),
                   // MyCard("Make Payment", "assets/login.jpeg", callPayment, Colors.indigoAccent),
                   MyCard("Contact Us", "assets/contact.png", callContact,
                       Colors.purpleAccent)

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:airs_inspector/models/verificationDto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../baseUrl.dart';
 import '../myApp.dart';
@@ -24,8 +25,9 @@ class _Premises extends State<Premises> {
     setState(() {
       isloading = true;
     });
-    var response =
-        await BaseClient().get("worthiness/${tccNo.text}").catchError((err) {});
+    var response = await BaseClient()
+        .get("verification/tcc/${tccNo.text}/integrated")
+        .catchError((err) {});
     if (response == null) {
       setState(() {
         isError = true;
@@ -37,6 +39,14 @@ class _Premises extends State<Premises> {
 
     Map<String, dynamic> user = jsonDecode(response);
     Verificationdto dto = Verificationdto.fromJson(user);
+    if (dto.displayName == null) {
+      setState(() {
+        isError = true;
+        isloading = false;
+        responseData = Verificationdto();
+      });
+      return;
+    }
     print(dto.id);
     setState(() {
       responseData = dto;
@@ -79,10 +89,7 @@ class _Premises extends State<Premises> {
               ),
               const SizedBox(height: 5),
               TextFormField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),
-                  LengthLimitingTextInputFormatter(9)
-                ],
+                inputFormatters: [LengthLimitingTextInputFormatter(50)],
                 controller: tccNo,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
@@ -118,6 +125,175 @@ class _Premises extends State<Premises> {
                 const SizedBox(
                   height: 20,
                 ),
+                responseData.displayName != null && !isloading
+                    ? Container(
+                        padding: EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(
+                                5.0,
+                                7.0,
+                              ),
+                              blurRadius: 10.0,
+                              spreadRadius: 2.0,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(children: [
+                            responseData.validity == "VALID"
+                                ? Container(
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(3, 135, 64, 1),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10)),
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    child: const Center(
+                                      child: Text(
+                                        "Business Premises Certificate Details",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(243, 14, 14, 1),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10)),
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    child: const Center(
+                                      child: Text(
+                                        "Business Premises Certificate Details",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+                            Divider(
+                              height: 30,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Owner Name: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text("${responseData.displayName}")
+                              ],
+                            ),
+                            const Divider(
+                              color: Colors.grey,
+                              thickness: BorderSide.strokeAlignCenter,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                responseData.validity == "VALID"
+                                    ? const Text(
+                                        "Expiry Date: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,color: Color.fromRGBO(3, 135, 64, 1)
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Expiry Date: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red),
+                                      ),
+                                responseData.validity == "VALID"
+                                    ? responseData.paymentDate != null
+                                        ? Text("${responseData.paymentDate}", style: const TextStyle(color: Color.fromRGBO(3, 135, 64, 1)),)
+                                        : const Text("N/A")
+                                    : responseData.paymentDate != null
+                                        ? Text(
+                                            "${responseData.paymentDate}",
+                                            style: const TextStyle(
+                                                color: Colors.red),
+                                          )
+                                        : const Text("N/A")
+                              ],
+                            ),
+                            const Divider(
+                              color: Colors.grey,
+                              thickness: BorderSide.strokeAlignCenter,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Certificate Number: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                responseData.id != null
+                                    ? Text("${responseData.id}")
+                                    : const Text("N/A")
+                              ],
+                            ),
+                            const Divider(
+                              color: Colors.grey,
+                              thickness: BorderSide.strokeAlignCenter,
+                            ),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Amount paid for: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Fire Service: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                responseData.amount != null
+                                    ? Text( NumberFormat.currency(symbol: '\₦')
+                                            .format(responseData.amount),style:const TextStyle(fontSize: 15, color: Color.fromRGBO(3, 135, 64, 1)))
+                                    : const Text("N/A")
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Business Premises: ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                responseData.amount2 != null
+                                    ? Text( NumberFormat.currency(symbol: '\₦')
+                                            .format(responseData.amount2),style:const TextStyle(fontSize: 15, color: Color.fromRGBO(3, 135, 64, 1)),)
+                                    : const Text("N/A")
+                              ],
+                            ),
+                          ]),
+                        ),
+                      )
+                    : isloading
+                        ? const CircularProgressIndicator()
+                        : isError
+                            ? const Text("Invalid Certificate Number")
+                            : const Text("")
               ])
             ],
           ),
