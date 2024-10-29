@@ -6,9 +6,17 @@ import 'package:airs_inspector/verification/bp.dart';
 import 'package:airs_inspector/verification/contact.dart';
 import 'package:airs_inspector/verification/genuine.dart';
 import 'package:airs_inspector/verification/payment.dart';
+import 'package:airs_inspector/verification/phoneVerification.dart';
 import 'package:airs_inspector/verification/rw.dart';
+import 'package:airs_inspector/verification/signin.dart';
+import 'package:airs_inspector/verification/signout.dart';
+import 'package:airs_inspector/verification/signoutDisplay.dart';
+import 'package:airs_inspector/verification/succesSignin.dart';
+import 'package:airs_inspector/verification/success.dart';
+import 'package:airs_inspector/verification/tc.dart';
 import 'package:airs_inspector/verification/tcc.dart';
 import 'package:airs_inspector/verification/tcode.dart';
+import 'package:airs_inspector/verification/tcodeDashboard.dart';
 import 'package:airs_inspector/verification/validity.dart';
 import 'package:flutter/material.dart';
 import 'package:airs_inspector/home.dart';
@@ -27,7 +35,18 @@ class _MainApp extends State<MainApp> {
 
   @override
   void initState() {
-    activeWidget = Home(callRw, callContact, callValidity, callOriginal, callTcode, callLogin, callPayment, callTcc, callBP, callPayVerify, callAsinSearch);
+    activeWidget = Home(
+        callRw,
+        callContact,
+        callValidity,
+        callOriginal,
+        callTcode,
+        callLogin,
+        callPayment,
+        callTcc,
+        callBP,
+        callPayVerify,
+        callAsinSearch);
     super.initState();
   }
 
@@ -57,47 +76,52 @@ class _MainApp extends State<MainApp> {
 
   callTcode() {
     setState(() {
-      activeWidget = const TCode();
+      activeWidget = MyDashboard();
     });
   }
 
-    callLogin() {
+  callLogin() {
     setState(() {
       activeWidget = const Login();
     });
   }
-    callPayment() {
+
+  callPayment() {
     setState(() {
       activeWidget = const Payment();
     });
   }
-    callBP() {
+
+  callBP() {
     setState(() {
       activeWidget = const Premises();
     });
   }
-    callTcc() {
+
+  callTcc() {
     setState(() {
       activeWidget = const Tcc();
     });
   }
-    callPayVerify() {
+
+  callPayVerify() {
     setState(() {
       activeWidget = const PaymentVerify();
     });
   }
-    callAsinSearch() {
+
+  callAsinSearch() {
     setState(() {
       activeWidget = const Asin();
     });
   }
-var kColorScheme =
-    ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 42, 4, 131));
 
-var kDarkScheme = ColorScheme.fromSeed(
-  seedColor: Color.fromARGB(255, 75, 52, 25),
-);
+  var kColorScheme =
+      ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 42, 4, 131));
 
+  var kDarkScheme = ColorScheme.fromSeed(
+    seedColor: Color.fromARGB(255, 75, 52, 25),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +137,11 @@ var kDarkScheme = ColorScheme.fromSeed(
             margin: const EdgeInsets.all(10)),
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          textStyle: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)
-        )),
+                backgroundColor: kColorScheme.onPrimaryContainer,
+                textStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold))),
         textTheme: ThemeData().textTheme.copyWith(
               titleLarge: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -126,6 +152,18 @@ var kDarkScheme = ColorScheme.fromSeed(
         useMaterial3: true,
       ),
       home: activeWidget,
+      routes: {
+        "/dashboard": (context) => MyDashboard(),
+        "/dashboards": (context) => const MainApp(),
+        "/tcode": (context) => const TCode(),
+        "/signin": (context) => const SignIn(),
+        "/signout": (context) => const SignoOut(),
+        "/verify": (context) => OtpInputExample(),
+        "/conditions": (context) => const Conditions(),
+        "/display": (context) => const SignoutDisplay(),
+        "/success": (context) => SuccessScreen(),
+        "/successs": (context) => SignInSuccessScreen(),
+      },
     );
   }
 }

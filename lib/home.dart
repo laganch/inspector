@@ -74,7 +74,7 @@ class Home extends StatelessWidget {
                 children: [
                   MyCard(
                       "Search ASIN", "assets/asin.png", callAsinSearch, const Color.fromRGBO(229, 89, 52, 1)),
-                  MyCard("Verify B.P. Certificate", "assets/certificate.png", callBp,
+                  MyCard("Verify Non-Tax Certificate", "assets/certificate.png", callBp,
                       const Color.fromRGBO(82, 108, 251, 1)),
                 ],
               ),

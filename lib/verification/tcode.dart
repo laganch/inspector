@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:airs_inspector/models/enforcementDto.dart';
 import 'package:airs_inspector/verification/application.dart';
 import 'package:airs_inspector/verification/signoutInfo.dart';
+import 'package:airs_inspector/verification/tcodeDashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -56,32 +57,32 @@ class _Tcode extends State<TCode> {
   }
 
   // ignore: non_constant_identifier_names
-  void _Signout() {
-    setState(() {
-      responseData = EnforcementDto();
-      isLoading = false;
-    });
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return const SignOutInfo();
-        },
-      ),
-    );
-  }
+  // void _Signout() {
+  //   setState(() {
+  //     responseData = EnforcementDto();
+  //     isLoading = false;
+  //   });
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) {
+  //         return const SignOutInfo();
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color.fromARGB(255, 125, 117, 8),
-        foregroundColor: Color.fromARGB(255, 255, 255, 255),
-        onPressed: _Signout,
-        icon: const Icon(Icons.sick),
-        label: const Text('SIGN OUT VEHICLE'),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   backgroundColor: Color.fromARGB(255, 125, 117, 8),
+      //   foregroundColor: Color.fromARGB(255, 255, 255, 255),
+      //   onPressed: _Signout,
+      //   icon: const Icon(Icons.sick),
+      //   label: const Text('SIGN OUT VEHICLE'),
+      // ),
       appBar: AppBar(
         title: const Text("Anambra Inspector"),
         elevation: 0,
@@ -95,7 +96,7 @@ class _Tcode extends State<TCode> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const MainApp();
+                  return MyDashboard();
                 },
               ),
             );
@@ -104,7 +105,7 @@ class _Tcode extends State<TCode> {
         ),
         actions: [
           IconButton(
-            onPressed: _Signout,
+            onPressed: () {},
             icon: const Icon(Icons.wallet),
           ),
         ],
@@ -487,51 +488,52 @@ class _Tcode extends State<TCode> {
                                         ),
                                       ],
                                     ),
-
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Divider(color: Colors.white),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                      color: Color.fromARGB(255, 21, 115, 183)),
-                                  padding: const EdgeInsets.all(15),
-                                  child: Column(
-                                    children: [
-                                      Text("VEHICLE LICENSE",
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .background,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Divider(color: Colors.white),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(
+                                              255, 21, 115, 183)),
+                                      padding: const EdgeInsets.all(15),
+                                      child: Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "${responseData.renewalStatus}",
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .background,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
-                                              )
-                                            ],
+                                          Text("VEHICLE LICENSE",
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .background,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          const SizedBox(
+                                            height: 10,
                                           ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    "${responseData.renewalStatus}",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .background,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(

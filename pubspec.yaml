@@ -118,8 +118,15 @@ flutter:
     - assets/asin.png
     - assets/payment.png
     - assets/status.png
-    - assets/status.png
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - assets/card2.png
+    - assets/card1.png
+    - assets/signin.png
+    - assets/signout.png
+    - assets/call.png
+    - assets/stamo.png
+    - assets/success.png
+    - assets/sta.png
+  # an image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
